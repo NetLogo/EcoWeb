@@ -14,9 +14,9 @@ breed [plant-pie-charts plant-pie-chart]
 
 patches-own [container# ]
 
-containers-own [pie-charts]
+containers-own [plants plant-vines pie-charts]
 plants-own [plant-type owned-by-container growth]
-plant-pie-charts-own [plant-type owned-by-container growth]
+plant-pie-charts-own [plant-type  growth]
 
 to setup
   clear-all
@@ -28,29 +28,7 @@ to setup
   set plant-color-4 [100 165 150 255]  ; gray green
   set container-edge-color gray + 2
   
-  set container-counter 0
-  let patch-at-center-of-container 1
-  ask patches with [pxcor mod spacing = 0 and pycor mod spacing = 0]  [ 
-      set patch-at-center-of-container self
-      set pcolor black
-      set plabel-color white
-      sprout 1 [
-        set breed containers
-        set shape "container"
-        set size 3
-        set color container-edge-color
-        set container# container-counter
-        
-        ask neighbors [ 
-          set pcolor gray - 4.5 + random-float 1 
-          set container# container-counter
-          ]
-       add-corner-plants patch-at-center-of-container
-       add-pie-charts
-      ]
-      
-      set container-counter container-counter + 1
-    ]
+  setup-patches
   visualize-plants
   visualize-containers
   reset-ticks
@@ -58,9 +36,35 @@ end
 
 
 
+to setup-patches
+  set container-counter 0
+  ask patches [set pcolor black]
+  ask patches with [pxcor mod spacing = 0 and pycor mod spacing = 0]  [ 
+      set plabel-color white
+      add-container-at-this-patch container-counter
+      set container-counter container-counter + 1
+  ]
+end
 
-to add-corner-plants [patch-at-center]
+
+to add-container-at-this-patch [container-number]
+     sprout 1 [
+        set breed containers
+        set shape "container"
+        set size 3
+        set color container-edge-color
+        set container# container-number
+        ask neighbors [set container# container-counter]
+        add-corner-plants self
+        add-pie-charts 9
+      ]
+end
+
+
+
+to add-corner-plants [my-container]
   let not-these-neighbors neighbors4
+  let these-plants no-turtles
   ask neighbors [
     if not member? self not-these-neighbors  [
       sprout 1 [
@@ -68,32 +72,32 @@ to add-corner-plants [patch-at-center]
         set owned-by-container container#
         set growth 1
         set shape "fan-plant"
-        set heading towards patch-at-center
+        set heading towards my-container
         back ((sqrt 1) / 2)
         if heading > 0 and heading < 90 [set plant-type 1]
         if heading > 90 and heading < 180 [set plant-type 2]
         if heading > 180 and heading < 270 [set plant-type 3]
         if heading > 270 and heading < 360 [set plant-type 4]
-        
+        set these-plants (turtle-set these-plants self)
       ]
     ]
   ]
 
 end
 
-to add-pie-charts
+to add-pie-charts [fraction]
   let twist 0
-  let the-pie-charts no-turtles
-  hatch 9 [
+  let these-pie-charts no-turtles
+  hatch fraction [
       set breed plant-pie-charts
       set shape "ninth-pie-piece"
       set heading 0 + twist
       set plant-type -1
       
-      set the-pie-charts (turtle-set the-pie-charts self)
+      set these-pie-charts (turtle-set these-pie-charts self)
     ]
-    set twist twist + (360 / 9)
-  set pie-charts the-pie-charts
+    set twist twist + (360 / fraction)
+  set pie-charts these-pie-charts
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -143,7 +147,80 @@ to visualize-plants
   ask plant-pie-charts [
     set plant-type -1
     set hidden? false
-    set size r
+    
+   ; ifelse see-plants-as = "pie chart" [set hidden? false][set hidden? true]
+  ]
+     
+  ask containers [
+    let the-pie-charts pie-charts
+    let this-container# container#
+    let ordered-plants nobody
+    set twist-counter 0
+    
+    if see-plants-as = "pie chart" [
+      
+      let these-plants plants with [owned-by-container = this-container#]
+      if any? these-plants [
+       ;; should be four plants
+       ; show count these-plants
+      set ordered-plants sort-on [plant-type]  these-plants 
+      foreach ordered-plants [
+  
+        ask ? [  
+
+          let this-plant-type plant-type
+        ;  show plant-type
+          let this-growth growth
+          
+          let available-plant-pie-charts the-pie-charts with [plant-type = -1 ]
+          ;  show (word "is" count  available-plant-pie-charts " >= " this-growth "?")
+          if count available-plant-pie-charts >= this-growth [
+
+          ask  n-of this-growth  available-plant-pie-charts [
+              set plant-type this-plant-type 
+             ; show twist-counter
+              set heading twist-counter * ((1 / 9) * 360)
+              set twist-counter twist-counter + 1 
+              set hidden? false
+          ]
+          ]
+          ;let these-pie-charts plant-pie-charts with [plant-type = this-plant-type]
+         ; foreach sort these-pie-charts [
+
+            ;  set heading 0
+           ;   set heading twist-counter + ((1 / 9) * 360)
+          ;    set twist-counter twist-counter + 1
+
+         ; ]
+        ]
+      ]
+      ]
+    ]
+    
+ 
+    ;[set hidden? true]
+     
+  
+  ]
+  color-plants
+end 
+
+
+to visualize-plants2
+
+   ask plants [ 
+    ifelse see-plants-as = "corner growth" [ 
+       set size growth
+      __set-line-thickness 0 + size / 40
+      set hidden? false
+    ]
+    [set hidden? true]         
+  ]
+  
+  ask plant-pie-charts [
+    set plant-type -1
+    set hidden? false
+    
    ; ifelse see-plants-as = "pie chart" [set hidden? false][set hidden? true]
   ]
      
@@ -345,7 +422,7 @@ CHOOSER
 see-plants-as
 see-plants-as
 "corner growth" "pie chart"
-1
+0
 
 SLIDER
 124
