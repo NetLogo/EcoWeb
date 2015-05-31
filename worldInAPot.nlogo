@@ -53,8 +53,10 @@ to setup
   set l-factor .2
   set f-factor .1
   
-  create-a-plant "a"  -.25  0
-  create-a-plant "b"  .25  0
+  create-a-plant "a"  -.25  -.25
+  create-a-plant "b"  .25  -.25
+  create-a-plant "a"  -.25  .25
+  create-a-plant "b"  .25  .25
   
   reset-ticks
 end
@@ -192,7 +194,6 @@ end
 to plant-test
  create-a-plant "a"  0  0
 end
-
 
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -411,6 +412,23 @@ BUTTON
 NIL
 run-turn
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+664
+29
+727
+62
+go
+if sun-resources = 0 [ stop ]\nrun-turn
+T
 1
 T
 OBSERVER
@@ -644,7 +662,7 @@ Polygon -7500403 true true 154 119 184 98 190 69 194 71 192 79 208 74 208 78 191
 Polygon -7500403 true true 154 66 183 18 184 29 175 41 209 42 204 48 194 48 200 55 193 54 187 47 173 45 155 74
 Polygon -7500403 true true 151 65 131 41 141 44 151 56 152 40 139 24 121 24 116 18 135 20 129 9 136 6
 Polygon -7500403 true true 150 136 132 119 109 121 106 116 127 117 121 91 127 93 132 112 152 131
-Polygon -7500403 true true 153 106 164 92 175 92 180 87 169 87 182 72 201 67 201 62 181 68 176 53 172 55 178 70 167 81 167 72 164 75 164 88 164 88 156 95 152 97
+Polygon -7500403 true true 153 106 164 92 175 92 180 87 169 87 182 72 201 67 201 62 181 68 176 53 172 55 178 70 167 81 167 72 164 75 164 88 156 95 152 97
 Polygon -7500403 true true 153 53 163 29 172 28 172 26 165 26 171 15 180 13 180 9 171 12 165 5 162 6 169 16 155 39
 Polygon -7500403 true true 150 76 134 60 126 36 124 33 131 58 122 52 115 42 114 47 119 54 95 66 97 69 122 57 151 79
 Polygon -7500403 true true 142 123 138 103 143 94 142 92 139 97 128 90 128 94 136 101 139 122
