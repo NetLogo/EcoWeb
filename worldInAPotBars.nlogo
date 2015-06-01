@@ -52,8 +52,8 @@ to setup
   ca
   set-default-shape units "square"
   ask patches with [ pxcor != 0  or   pycor != 0 ] [ set pcolor black + 1.1 ]
-  set water-resources 50
-  set sun-resources 9
+  set water-resources init-water
+  set sun-resources init-sun
   set r-factor .2
   set t-factor .2
   set l-factor .2
@@ -368,7 +368,7 @@ leaf-b
 leaf-b
 0
 left-for-b-without leaf-b
-0.2
+0.3
 .1
 1
 NIL
@@ -383,7 +383,7 @@ fruit-b
 fruit-b
 0
 left-for-b-without fruit-b
-0.3
+0.2
 .1
 1
 NIL
@@ -483,6 +483,36 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+669
+28
+841
+61
+init-sun
+init-sun
+5
+20
+10
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+669
+64
+841
+97
+init-water
+init-water
+30
+50
+50
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
