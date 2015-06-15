@@ -150,7 +150,7 @@ to launch-offspring
     let yc item 1 coords
     hatch 1 [
       st
-      init-plant xc yc 
+      init-plant xc yc false
       ht
     ]
   ]
@@ -285,19 +285,21 @@ end
 to create-a-random-plant [  xc yc  ]
   create-plants 1 
   [
-    init-plant xc yc
+    init-plant xc yc true
   ]  
 end
 
-to init-plant [xc yc]
+to init-plant [xc yc random-type? ]
   let initial-part-states [ 1 0 1 0 ]
   let rootsz item 0 initial-part-states
   let tubersz item 1 initial-part-states
   let leavesz item 2 initial-part-states
   let fruitsz item 3 initial-part-states
   ;set extras 2
-    let ptype one-of ["a" "b"]
-    set grph ptype
+    if random-type? [ 
+      let ptype one-of ["a" "b"]
+     set grph ptype
+    ]
     setxy xc yc 
     set heading 0
     
@@ -319,7 +321,7 @@ to init-plant [xc yc]
     set my-tubers t
     set my-fruits f
     
-    ifelse (ptype = "a") 
+    ifelse (grph = "a") 
     [ set goal-list goal-list-a ]
     [ set goal-list goal-list-b ]
     set goal-list map round goal-list
@@ -597,9 +599,9 @@ SLIDER
 661
 init-water
 init-water
-20
+10
 50
-21
+10
 1
 1
 NIL
@@ -656,9 +658,9 @@ SLIDER
 582
 water-cycle-length
 water-cycle-length
-10
+7
 30
-18
+11
 1
 1
 NIL
