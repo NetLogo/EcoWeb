@@ -123,8 +123,8 @@ end
 
 
 to run-turn
-  if (ticks mod water-cycle-length = 0) [ ask pot-patches [ set water-resources randomize init-water ] ]
-  ask pot-patches [set sun-resources randomize init-sun  set pcolor get-color-for-patch ]
+  if (ticks mod water-cycle-length = 0) [ ask pot-patches [ set water-resources randomize init-water set pcolor get-color-for-patch] ]
+  ask pot-patches [set sun-resources randomize init-sun   ]
   ask plants [
    let availables extras + harvest-resources 
    set availables take-toll-from availables
