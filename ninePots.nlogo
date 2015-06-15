@@ -133,7 +133,9 @@ to run-turn
      set goal-list replace-item 3 goal-list (item 3 goal-list + 2)
      launch-offspring 
    ]
-   redraw-plant
+   
+   ifelse (root-of part-states < 1 or leaf-of part-states < 1) [ ask my-roots [ die ] ask my-leaves [ die ] ask my-tubers [die] ask my-fruits [ die ] die ]
+   [ redraw-plant ]
   ]
   tick
 end
@@ -618,7 +620,7 @@ MONITOR
 349
 577
 552
-623
+622
 NIL
 count plants with [ grph = \"a\" ]
 17
@@ -629,7 +631,7 @@ MONITOR
 575
 578
 779
-624
+623
 NIL
 count plants with [ grph = \"b\" ]
 17
@@ -640,7 +642,7 @@ MONITOR
 48
 494
 188
-540
+539
 water-cycle-number
 floor (ticks / water-cycle-length)
 0
@@ -651,7 +653,7 @@ SLIDER
 39
 549
 212
-583
+582
 water-cycle-length
 water-cycle-length
 10
