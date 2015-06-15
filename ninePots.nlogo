@@ -608,9 +608,9 @@ SLIDER
 661
 init-water
 init-water
-10
+3
 50
-10
+3
 1
 1
 NIL
@@ -667,9 +667,9 @@ SLIDER
 582
 water-cycle-length
 water-cycle-length
-7
+2
 30
-10
+2
 1
 1
 NIL
