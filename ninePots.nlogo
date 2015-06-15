@@ -60,6 +60,10 @@ fruits-own [
   xratio yratio
 ]
 
+to-report get-color-for-patch
+  report brown - 2 * (sun-resources + water-resources) / (init-sun + init-water)
+end
+
 to setup-pot-patches
   ask patches [ set pot-neighbors no-patches ]
   set pot-patches patches with [ abs pxcor < 2 and abs pycor < 2 ]
@@ -67,7 +71,7 @@ to setup-pot-patches
     set sun-resources randomize init-sun
     set water-resources randomize init-water
     set pot-neighbors neighbors with [member? self pot-patches]
-    set pcolor brown - 2 * (sun-resources + water-resources) / (init-sun + init-water)
+    set pcolor get-color-for-patch
   ]
   
   
@@ -119,8 +123,8 @@ end
 
 
 to run-turn
-  if (ticks mod water-cycle-length = 0) [ ask patches [ set water-resources randomize init-water ] ]
-  ask patches [set sun-resources randomize init-sun ]
+  if (ticks mod water-cycle-length = 0) [ ask pot-patches [ set water-resources randomize init-water ] ]
+  ask pot-patches [set sun-resources randomize init-sun  set pcolor get-color-for-patch ]
   ask plants [
    let availables extras + harvest-resources 
    set availables take-toll-from availables
@@ -591,7 +595,7 @@ init-sun
 init-sun
 5
 20
-9
+8
 1
 1
 NIL
