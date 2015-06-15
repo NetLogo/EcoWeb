@@ -309,11 +309,16 @@ to init-plant [xc yc random-type? ]
     let f no-turtles
     set color lime
     set part-states initial-part-states
-    hatch-roots 1 [ set r self set color yellow  set shape "root" set heading 180 set size rootsz fd .5 * tubersz  ]
-    hatch-leaves 1 [ set l self set color lime  set shape "leaf" set heading 0 set size leavesz fd .5 * tubersz 
-      hatch-fruits 1 [ set heading 0 set f self set color orange  set shape "fruit" set size .5 * fruitsz set xratio (random-float -.2  + random-float .2) set yratio (.2   + random-float .2)   ]
+    let root-color yellow
+    let leaf-color lime
+    let fruit-color orange
+    let tuber-color brown
+    if grph = "b" [ set root-color orange  set leaf-color green set fruit-color red set tuber-color brown + 2 ]
+    hatch-roots 1 [ set r self set color root-color set shape "root" set heading 180 set size rootsz fd .5 * tubersz  ]
+    hatch-leaves 1 [ set l self set color leaf-color set shape "leaf" set heading 0 set size leavesz fd .5 * tubersz 
+      hatch-fruits 1 [ set heading 0 set f self set color fruit-color  set shape "fruit" set size .5 * fruitsz set xratio (random-float -.2  + random-float .2) set yratio (.2   + random-float .2)   ]
        ]
-    hatch-tubers 1 [ set t self set color brown  set shape "tuber" set size tubersz  ]
+    hatch-tubers 1 [ set t self set color tuber-color set shape "tuber" set size tubersz  ]
     
     ht
     set my-roots r
@@ -660,7 +665,7 @@ water-cycle-length
 water-cycle-length
 7
 30
-11
+10
 1
 1
 NIL
